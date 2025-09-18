@@ -10,8 +10,13 @@ class Settings(BaseSettings):
     DB_USER: str
     DB_PASS: str
     DB_NAME: str
+    DB_DRIVER: str
+    DATABASE_URL: str
 
     TELEGRAM_BOT_TOKEN: str
     SECRET_KEY: str
     SUPERUSER_ID: int
+    PYTHONPATH: str
+
+config = Settings()
     
