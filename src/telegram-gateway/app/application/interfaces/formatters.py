@@ -16,4 +16,13 @@ class IMessageFormattingService(ABC):
     def format_message(self, template: str, context: Dict[str, Any]) -> str:
         pass
 
+    @abstractmethod
+    def _wrap_text(self, text: str) -> str:
+        """Интерфейс для переноса длинных строк для соответствия ширине"""
+        pass
+
+    @abstractmethod
+    def _add_consistent_width(self, text: str) -> str:
+        """Интерфейс для добавления унифицированной ширины к сообщению"""
+        pass
 

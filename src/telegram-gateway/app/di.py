@@ -4,23 +4,26 @@ Dependency Injection Container - собираем все зависимости 
 from config import config
 from aiogram import Bot
 from app.application.services.ui_service import BotUIService
-from contextlib import asynccontextmanager
-from typing import AsyncGenerator
-from sqlalchemy.ext.asyncio import AsyncSession
+from app.domain.services.message_formatting_service import MessageFormattingService
+from app.adapters.telegram import TelegramMessageSender, TelegramBotInfoProvider
+from app.domain.services.pagination_service import PaginationService
+from app.application.use_cases import BotUseCases
 class Container:
     def __init__(self):
         self.config = config
         self.bot = Bot(token=config.TELEGRAM_BOT_TOKEN)
+
+        #TODO: Добавить доступ к микросервису user-service
         
-        #Создаем доменные сервисы (без состояния)
         #TODO: Добавить доменные сервисы
-        self.message_formatter=self.message_formatter, 
-        self.bot_info_provider=self.bot_info_provider,
-        self.pagination_service=self.pagination_service
+        self.message_formatter=MessageFormattingService()
+        self.pagination_service=PaginationService()
 
 
         #Создаем адаптеры (без состояния)
-        #TODO: Добавить адаптеры
+        self.bot_info_provider=TelegramBotInfoProvider(self.bot)
+        self.message_sender=TelegramMessageSender(self.bot),
+
 
 
     async def get_ui_service(self) -> BotUIService:
@@ -30,26 +33,28 @@ class Container:
             bot_info_provider=self.bot_info_provider,
             pagination_service=self.pagination_service
         )
+    
 
 #TODO: Добавление получения репозиториев и сервисов
 
-    async def get_use_cases(self, session: AsyncSession) -> BotUseCases:
+    async def get_use_cases(self) -> BotUseCases:
         """Создает use cases с зависимостями"""
         # Получаем сервисы через новые методы
         # user_service = await self.get_user_service(session)
-        # user_repository = await self.get_user_repository(session)
-        # ui_service = await self.get_ui_service()
+        ui_service = await self.get_ui_service()
         
         # Создаем use cases
         return BotUseCases(
-            # message_sender=self.message_sender,
-            # user_repository=user_repository,
-            # bot_info_provider=self.bot_info_provider,
+            message_sender=self.message_sender,
+            bot_info_provider=self.bot_info_provider,
             # user_service=user_service,
-            # ui_service=ui_service,
+            ui_service=ui_service,
 
         )
-    
+#TODO: Добавление хендлеров
+    def get_handlers(self) -> TelegramHandlers:
+        """Создает обработчики без use cases (они будут из middleware)"""
+        return TelegramHandlers()
 
 # Глобальный контейнер
 _container: Container = None
