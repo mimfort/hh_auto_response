@@ -15,3 +15,20 @@ class DatabaseMiddleware(BaseMiddleware):
         super().__init__()
         self.container = container
     
+    async def __call__(
+        self,
+        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
+        data: Dict[str, Any]
+    ) -> Any:
+        # Добавляем use_cases в data для handlers и dialogs
+        use_cases = await self.container.get_use_cases()
+        data["use_cases"] = use_cases
+            
+        # Добавляем для aiogram-dialog middleware_data
+        if "middleware_data" not in data:
+            data["middleware_data"] = {}
+        data["middleware_data"]["use_cases"] = use_cases
+
+        # Вызываем обработчик с данными
+        return await handler(event, data)

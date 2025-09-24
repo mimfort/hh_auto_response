@@ -6,9 +6,10 @@ from app.application.interfaces import (
     IBotInfoProvider,
     IPaginationService
 )
+from app.application.interfaces import IBotUIService
 
 
-class BotUIService:
+class BotUIService(IBotUIService):
     def __init__(
             self,
             message_formatter:IMessageFormattingService,
