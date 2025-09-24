@@ -8,6 +8,8 @@ from app.domain.services.message_formatting_service import MessageFormattingServ
 from app.adapters.telegram import TelegramMessageSender, TelegramBotInfoProvider
 from app.domain.services.pagination_service import PaginationService
 from app.application.use_cases import BotUseCases
+from app.adapters.handlers import TelegramHandlers
+
 class Container:
     def __init__(self):
         self.config = config
