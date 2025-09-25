@@ -1,7 +1,7 @@
 '''
 Dependency Injection Container - собираем все зависимости приложения
 '''
-from config import config
+from app.config import Settings
 from aiogram import Bot
 from app.application.services.ui_service import BotUIService
 from app.domain.services.message_formatting_service import MessageFormattingService
@@ -12,8 +12,8 @@ from app.adapters.handlers import TelegramHandlers
 
 class Container:
     def __init__(self):
-        self.config = config
-        self.bot = Bot(token=config.TELEGRAM_BOT_TOKEN)
+        self.config = Settings()
+        self.bot = Bot(token=self.config.TELEGRAM_BOT_TOKEN)
 
         #TODO: Добавить доступ к микросервису user-service
         
@@ -24,7 +24,7 @@ class Container:
 
         #Создаем адаптеры (без состояния)
         self.bot_info_provider=TelegramBotInfoProvider(self.bot)
-        self.message_sender=TelegramMessageSender(self.bot),
+        self.message_sender=TelegramMessageSender(self.bot)
 
 
 
@@ -66,5 +66,5 @@ def get_container() -> Container:
     """Получает глобальный экземпляр контейнера"""
     global _container
     if _container is None:
-        _container = Container(config)
+        _container = Container()
     return _container
