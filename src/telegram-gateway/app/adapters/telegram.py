@@ -25,9 +25,10 @@ class TelegramMessageSender(ITelegramMessageSender):
         await self.bot.send_message(
             chat_id=response.chat_id,
             text=response.text,
+            reply_markup=reply_markup,
             parse_mode=response.parse_mode,
-            reply_markup=reply_markup
         )
+
     async def edit_message(self, response: BotResponse) -> None:
         """Редактирует сообщение через aiogram"""
         reply_markup = None
@@ -38,10 +39,10 @@ class TelegramMessageSender(ITelegramMessageSender):
         
         await self.bot.edit_message_text(
             chat_id=response.chat_id,
-            message_id=response.message_id,  # Предполагаем, что message_id есть в response
             text=response.text,
+            reply_markup=reply_markup,
             parse_mode=response.parse_mode,
-            reply_markup=reply_markup
+            message_id=response.message_id  # Предполагаем, что message_id есть в response
         )
 
 

@@ -27,4 +27,21 @@ class TelegramHandlers:
 
 
         #TODO: Добавить обработчик инлайн кнопок (колбеки)
-        
+
+
+    async def start_command(
+        self,
+        message: Message,
+        use_cases: BotUseCases,
+        state: FSMContext
+    ):
+        """Обработчик команды /start"""
+        await state.clear()
+        user = User(
+            tg_id=message.from_user.id,
+            first_name=message.from_user.first_name,
+            last_name=message.from_user.last_name,
+            username=message.from_user.username,
+            language_code=message.from_user.language_code
+        )
+        await use_cases.handle_start_command(user, message.chat.id)

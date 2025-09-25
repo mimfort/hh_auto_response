@@ -40,3 +40,13 @@ class MessageFormattingService(IMessageFormattingService):
         """Добавляет унифицированную ширину к сообщению"""
         return f"{self.THIN_LINE}\n{text}\n{self.THIN_LINE}"
     
+    def format_welcome_message(self, user_first_name: str) -> str:
+        """Форматирует приветственное сообщение"""
+        welcome_text = (
+            f"👋 Привет, <b>{user_first_name}</b>!\n\n"
+            "Я - бот, который поможет тебе с поиском работы на HeadHunter.\n"
+            "Используй меню ниже, чтобы начать."
+        )
+        welcome_text = self._wrap_text(welcome_text)
+        return self._add_consistent_width(welcome_text)
+    

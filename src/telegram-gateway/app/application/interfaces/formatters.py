@@ -12,9 +12,6 @@ class IBotInfoProvider(ABC):
 class IMessageFormattingService(ABC):
     """Интерфейс для форматирования сообщений"""
 
-    @abstractmethod
-    def format_message(self, template: str, context: Dict[str, Any]) -> str:
-        pass
 
     @abstractmethod
     def _wrap_text(self, text: str) -> str:
@@ -24,5 +21,10 @@ class IMessageFormattingService(ABC):
     @abstractmethod
     def _add_consistent_width(self, text: str) -> str:
         """Интерфейс для добавления унифицированной ширины к сообщению"""
+        pass
+
+    @abstractmethod
+    def format_welcome_message(self, user_first_name: str) -> str:
+        """Интерфейс для форматирования приветственного сообщения"""
         pass
 

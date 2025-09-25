@@ -37,8 +37,8 @@ class Message(BaseModel):
 
 class BotResponse(BaseModel):
     """Ответ бота"""
-    text: str
     chat_id: int
-    parse_mode: Optional[str] = None
+    text: str
     reply_markup: Optional[Dict[str, Any]] = None
-    message_id: int | None
+    parse_mode: str|None = "HTML"
+    message_id: int | None = None  
