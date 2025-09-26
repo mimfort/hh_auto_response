@@ -1,6 +1,7 @@
 """
 User Repository - работа с пользователями в базе данных
 """
+
 from typing import Optional, List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update, delete
@@ -12,16 +13,12 @@ from app.domain.interfaces import IUserRepository
 
 class UserRepository(IUserRepository):
     def __init__(self, session: AsyncSession):
-        self._session = session  
+        self._session = session
 
     async def get_by_id(self, user_id: int) -> Optional[User]:
         """Получить пользователя по ID"""
         try:
-            stmt = (
-                select(UserModel)
-                .where(UserModel.id == user_id)
-                .limit(1)
-            )
+            stmt = select(UserModel).where(UserModel.id == user_id).limit(1)
             result = await self._session.execute(stmt)
             user_model = result.scalar_one_or_none()
             return self._model_to_domain(user_model) if user_model else None
@@ -33,9 +30,7 @@ class UserRepository(IUserRepository):
         """Получить пользователя по Telegram ID"""
         try:
             stmt = (
-                select(UserModel)
-                .where(UserModel.telegram_id == telegram_id)
-                .limit(1)
+                select(UserModel).where(UserModel.telegram_id == telegram_id).limit(1)
             )
             result = await self._session.execute(stmt)
             user_model = result.scalar_one_or_none()
@@ -62,7 +57,7 @@ class UserRepository(IUserRepository):
     async def create(self, user: User) -> User:
         """Создать пользователя"""
         try:
-            user_model = UserModel(**user.model_dump(exclude={'id'}))
+            user_model = UserModel(**user.model_dump(exclude={"id"}))
             self._session.add(user_model)
             await self._session.commit()
             await self._session.refresh(user_model)
@@ -77,7 +72,7 @@ class UserRepository(IUserRepository):
             stmt = (
                 update(UserModel)
                 .where(UserModel.id == user.id)
-                .values(**user.model_dump(exclude={'id'}))
+                .values(**user.model_dump(exclude={"id"}))
                 .returning(UserModel)
             )
             result = await self._session.execute(stmt)
@@ -87,9 +82,6 @@ class UserRepository(IUserRepository):
         except SQLAlchemyError as e:
             await self._session.rollback()
             raise ValueError(f"Error updating user: {str(e)}")
-
-
-        
 
     def _model_to_domain(self, user_model: UserModel) -> User:
         """Преобразовать SQLAlchemy модель в Pydantic модель"""
@@ -101,8 +93,9 @@ class UserRepository(IUserRepository):
             last_name=user_model.last_name,
             language_code=user_model.language_code,
             is_banned=user_model.is_banned,
-            is_admin=user_model.is_admin
+            is_admin=user_model.is_admin,
         )
+
     def _domain_to_model(self, user: User) -> UserModel:
         """Преобразовать Pydantic модель в SQLAlchemy модель"""
         return UserModel(
@@ -113,5 +106,5 @@ class UserRepository(IUserRepository):
             last_name=user.last_name,
             language_code=user.language_code,
             is_banned=user.is_banned,
-            is_admin=user.is_admin
+            is_admin=user.is_admin,
         )

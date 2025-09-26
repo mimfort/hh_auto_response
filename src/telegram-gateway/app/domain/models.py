@@ -15,6 +15,7 @@ class User(BaseModel):
     language_code: str|None
     is_banned: bool = False
     is_admin: bool = False
+
     
   
     @computed_field

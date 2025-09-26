@@ -626,3 +626,9 @@ async def get_user(user_id: int):
 > **Совет:**  
 > Всегда начинайте с описания бизнес-логики и интерфейсов, а инфраструктуру реализуйте последней.  
 > UI держите максимально изолированным — это упростит поддержку и масштабирование.
+
+
+
+```
+/Users/aleksejzadoroznyj/PycharmProjects/hhtgbot/hh_auto_response/src/user-service/.venv/bin/python
+```
