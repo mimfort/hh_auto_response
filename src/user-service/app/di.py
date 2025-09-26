@@ -11,6 +11,7 @@ from app.domain.services.user_service import UserService
 
 
 
+
 class Container:
     """DI контейнер для user-service"""
 
