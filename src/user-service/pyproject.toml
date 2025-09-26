@@ -4,4 +4,12 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "alembic>=1.16.5",
+    "advanced-alchemy>=1.4.5",
+    "sqlalchemy>=2.0.41",
+    "pydantic>=2.11.9",
+    "pydantic-settings>=2.11.0",
+    "ruff>=0.13.2",
+    "asyncpg>=0.30.0",
+]
