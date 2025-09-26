@@ -7,15 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sess
 
 from app.config import get_settings
 from app.domain.interfaces import IUserRepository, IUserService
-from app.infrastructure.repositories.user_repository import UserRepository
 from app.domain.services.user_service import UserService
-from app.application.use_cases.user_use_cases import (
-    CreateUserUseCase,
-    GetUserUseCase,
-    UpdateUserUseCase,
-    DeleteUserUseCase,
-    BanUserUseCase,
-)
+
 
 
 class Container:
